@@ -28,26 +28,39 @@
  *     - https://www.netlify.com/docs/functions/#identity-and-functions
  */
 
-exports.handler = function(event, context, callback) {
+const fetch = require("node-fetch");
+
+exports.handler = function(event, context) {
   let body = JSON.parse(event.body);
-  if (body.event === "validate") {
-    const responseBody = { app_metadata: { roles: ["reader"] } };
-    fetch("https://cloud-macrame.glitch.me/webhook", {
-      method: "post",
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify(body)
-    })
-      .then(res => res.json())
-      .then(data => console.log(data));
-    callback(null, {
-      statusCode: 200,
-      body: JSON.stringify(responseBody)
+  if (body.event === "signup") {
+    const responseBody = { app_metadata: { roles: ["user"] } };
+    console.log(body);
+    console.log(responseBody);
+
+    const query = JSON.stringify({
+      query: `mutation {
+            insert_users(objects: [
+              {
+                id: "${body.user.id}",
+                name: "${body.user.user_metadata.full_name}",
+                email: "${body.user.email}",
+              }
+            ]) { }
+          }
+      `
+    });
+
+    return fetch("https://count-em-all-db.herokuapp.com/v1alpha1/graphql", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: query
+    }).then(res => {
+      return {
+        statusCode: 200,
+        body: responseBody
+      };
     });
   } else {
-    // if you happen to enable this webhook for signup or login events, this will make sure they still succeed
     callback(null, {
       statusCode: 200
     });
