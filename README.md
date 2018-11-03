@@ -1,3 +1,7 @@
+# count-em-all
+
+## A simple app to count the number of people attending a gathering.
+
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Scripts
