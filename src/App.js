@@ -18,7 +18,9 @@ class App extends Component {
       loginUser();
     }
     netlifyIdentity.on("login", user => this.setState({ user }, loginUser()));
-    netlifyIdentity.on("logout", user => this.setState({ user: null }, logoutUser()));
+    netlifyIdentity.on("logout", user =>
+      this.setState({ user: null }, logoutUser())
+    );
   }
 
   handleLogIn = () => {
@@ -43,16 +45,17 @@ class App extends Component {
             color="inherit"
             style={{ marginBottom: "20px" }}
           >
-            Catch'em All
+            Count'em All
           </Typography>
           <Typography variant="h5">
             A simple app to count the number of people attending a gathering!
           </Typography>
           <p>
-            Now leverage the power of AI in managing the attedants of your
-            event. With Count'em All you can now use the extensively trained and
-            professionally developed models from Clarifai to reliably count the
-            number of people attending your event right from your browser!
+            Now leverage the power of Machine Learning in managing the attedants
+            of your event. With Count'em All you can now use the extensively
+            trained and professionally developed models from Clarifai to
+            reliably count the number of people attending your event right from
+            your browser!
           </p>
           {user ? (
             <Button
@@ -84,6 +87,16 @@ class App extends Component {
               </Button>
             </Fragment>
           )}
+          <br/>
+          <br/>
+          <br/>
+          <br/>
+          <a href="https://hasura.io">
+            <img
+              width="150px"
+              src="https://graphql-engine-cdn.hasura.io/img/powered_by_hasura_black.svg"
+            />
+          </a>
         </div>
       </div>
     );
