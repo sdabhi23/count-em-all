@@ -87,12 +87,10 @@ class App extends Component {
               </Button>
             </Fragment>
           )}
-          <br/>
-          <br/>
-          <br/>
-          <br/>
+          <br />
           <a href="https://hasura.io">
             <img
+              id="hasura"
               width="150px"
               src="https://graphql-engine-cdn.hasura.io/img/powered_by_hasura_black.svg"
             />
