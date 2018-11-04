@@ -38,33 +38,30 @@ exports.handler = (event, context) => {
     console.log(body);
     console.log(responseBody);
 
-    const query = JSON.stringify({
-      query: `mutation {
-            insert_users(objects: [
-              {
-                id: "${body.user.id}",
-                name: "${body.user.user_metadata.full_name}",
-                email: "${body.user.email}",
+    return axios({
+      url: 'https://count-em-all-db.herokuapp.com/v1alpha1/graphql',
+      method: 'post',
+      data: {
+        query: `
+          mutation {
+              insert_users(objects: [{id: "${body.user.id}", name: "${body.user.user_metadata.full_name}", email: "${body.user.email}"}]) {
+                affected_rows
               }
-            ]) { }
-          }
-      `
+            }
+          `
+      }
+    }).then(res => {
+      return {
+        statusCode: 200,
+        body: responseBody
+      };
+    }).catch((err) => {
+      console.log(err)
+      return {
+        statusCode: 400,
+        body: responseBody
+      };
     });
-
-    // return fetch("https://count-em-all-db.herokuapp.com/v1alpha1/graphql", {
-    //   method: "POST",
-    //   headers: { "Content-Type": "application/json" },
-    //   body: query
-    // })
-
-    return axios
-      .post("https://count-em-all-db.herokuapp.com/v1alpha1/graphql", query)
-      .then(res => {
-        return {
-          statusCode: 200,
-          body: responseBody
-        };
-      });
   } else {
     callback(null, {
       statusCode: 200
