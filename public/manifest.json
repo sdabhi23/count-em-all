@@ -1,6 +1,6 @@
 {
-  "short_name": "React App",
-  "name": "Create React App Sample",
+  "short_name": "Count'em All",
+  "name": "An app to count number of people attending a gathering",
   "icons": [
     {
       "src": "favicon.ico",

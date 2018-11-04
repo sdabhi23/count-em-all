@@ -1,0 +1,29 @@
+.Dash {
+  flex-grow: 1;
+}
+
+#title_main {
+  flex-grow: 1;
+}
+
+.dash-main {
+  margin: 10rem 5rem;
+}
+
+@media only screen and (max-width: 600px) {
+  .dash-main {
+    margin: 3rem 2.5rem 1rem 2.5rem;
+  }
+}
+
+.main_drop {
+  width: 100%;
+  height: 25vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  border-radius: 10px;
+  margin-bottom: 20px;
+  border: dashed 2px darkgray;
+}
