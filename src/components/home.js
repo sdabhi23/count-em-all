@@ -32,7 +32,10 @@ class Home extends Component {
     } else {
       loginUser();
     }
-    netlifyIdentity.on("login", user => this.setState({ user }, loginUser()));
+    netlifyIdentity.on("login", user => {
+      this.setState({ user }, loginUser());
+      this.props.history.replace("/dash");
+    });
     netlifyIdentity.on("logout", user =>
       this.setState({ user: null }, logoutUser())
     );
