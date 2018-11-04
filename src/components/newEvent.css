@@ -1,4 +1,4 @@
-.Dash {
+.NewEvent {
   flex-grow: 1;
 }
 
@@ -6,12 +6,12 @@
   flex-grow: 1;
 }
 
-.dash-main {
-  margin: 10rem 5rem;
+.newEvent-main {
+  margin: 5rem 5rem;
 }
 
 @media only screen and (max-width: 600px) {
-  .dash-main {
+  .newEvent-main {
     margin: 3rem 2.5rem 1rem 2.5rem;
   }
 }

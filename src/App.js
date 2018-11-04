@@ -5,6 +5,7 @@ import { BrowserRouter as Router, Route } from "react-router-dom";
 
 import Home from "./components/home";
 import Dash from "./components/dash";
+import NewEvent from "./components/newEvent";
 
 class App extends Component {
   render() {
@@ -14,6 +15,7 @@ class App extends Component {
           <div>
             <Route exact path="/" component={Home} />
             <Route path="/dash" component={Dash} />
+            <Route path="/new" component={NewEvent} />
           </div>
         </Router>
       </div>
