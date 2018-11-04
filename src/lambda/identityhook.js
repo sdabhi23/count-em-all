@@ -38,7 +38,7 @@ exports.handler = (event, context,  callback) => {
     console.log(body);
     console.log(responseBody);
 
-    await axios({
+    axios({
       url: 'https://count-em-all-db.herokuapp.com/v1alpha1/graphql',
       method: 'post',
       data: {
@@ -58,7 +58,7 @@ exports.handler = (event, context,  callback) => {
     }).catch((err) => {
       console.log(err)
       callback(null, {
-        statusCode: 400,
+        statusCode: 204,
         body: responseBody
       });
     });
