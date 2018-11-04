@@ -29,7 +29,7 @@
  */
 
 //var fetch = require("node-fetch");
-import fetch from "node-fetch";
+import axios from "axios";
 
 exports.handler = (event, context) => {
   let body = JSON.parse(event.body);
@@ -51,16 +51,20 @@ exports.handler = (event, context) => {
       `
     });
 
-    return fetch("https://count-em-all-db.herokuapp.com/v1alpha1/graphql", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: query
-    }).then(res => {
-      return {
-        statusCode: 200,
-        body: responseBody
-      };
-    });
+    // return fetch("https://count-em-all-db.herokuapp.com/v1alpha1/graphql", {
+    //   method: "POST",
+    //   headers: { "Content-Type": "application/json" },
+    //   body: query
+    // })
+
+    return axios
+      .post("https://count-em-all-db.herokuapp.com/v1alpha1/graphql", query)
+      .then(res => {
+        return {
+          statusCode: 200,
+          body: responseBody
+        };
+      });
   } else {
     callback(null, {
       statusCode: 200
