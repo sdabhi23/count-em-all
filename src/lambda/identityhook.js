@@ -28,9 +28,10 @@
  *     - https://www.netlify.com/docs/functions/#identity-and-functions
  */
 
-const fetch = require("node-fetch");
+//var fetch = require("node-fetch");
+import fetch from "node-fetch";
 
-exports.handler = function(event, context) {
+exports.handler = (event, context) => {
   let body = JSON.parse(event.body);
   if (body.event === "signup") {
     const responseBody = { app_metadata: { roles: ["user"] } };
