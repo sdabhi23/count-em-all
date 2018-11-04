@@ -13,7 +13,7 @@ const DashButton = withRouter(({ history }) => (
   <Button
     color="primary"
     onClick={() => {
-      history.push("/dash");
+      history.replace("/dash");
     }}
     variant="contained"
     size="large"

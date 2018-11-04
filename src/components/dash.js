@@ -62,7 +62,7 @@ class Dash extends Component {
     console.log(this.state.user);
     netlifyIdentity.on("logout", user => {
       this.setState({ user: null }, logoutUser());
-      this.props.history.push("/");
+      this.props.history.replace("/");
     });
   }
 
