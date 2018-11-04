@@ -53,13 +53,13 @@ exports.handler = (event, context,  callback) => {
     }).then(res => {
       callback(null, {
         statusCode: 200,
-        body: responseBody
+        body: JSON.stringify(responseBody)
       });
     }).catch((err) => {
       console.log(err)
       callback(null, {
         statusCode: 204,
-        body: responseBody
+        body: JSON.stringify(responseBody)
       });
     });
   } else {
