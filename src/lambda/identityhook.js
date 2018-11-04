@@ -31,37 +31,42 @@
 //var fetch = require("node-fetch");
 import axios from "axios";
 
-exports.handler = (event, context) => {
+exports.handler = (event, context,  callback) => {
   let body = JSON.parse(event.body);
   if (body.event === "signup") {
     const responseBody = { app_metadata: { roles: ["user"] } };
     console.log(body);
     console.log(responseBody);
 
-    return axios({
-      url: 'https://count-em-all-db.herokuapp.com/v1alpha1/graphql',
-      method: 'post',
-      data: {
-        query: `
-          mutation {
-              insert_users(objects: [{id: "${body.user.id}", name: "${body.user.user_metadata.full_name}", email: "${body.user.email}"}]) {
-                affected_rows
-              }
-            }
-          `
-      }
-    }).then(res => {
-      return {
-        statusCode: 200,
-        body: responseBody
-      };
-    }).catch((err) => {
-      console.log(err)
-      return {
-        statusCode: 400,
-        body: responseBody
-      };
+    callback(null, {
+      statusCode: 200,
+      body: responseBody
     });
+
+    // axios({
+    //   url: 'https://count-em-all-db.herokuapp.com/v1alpha1/graphql',
+    //   method: 'post',
+    //   data: {
+    //     query: `
+    //       mutation {
+    //           insert_users(objects: [{id: "${body.user.id}", name: "${body.user.user_metadata.full_name}", email: "${body.user.email}"}]) {
+    //             affected_rows
+    //           }
+    //         }
+    //       `
+    //   }
+    // }).then(res => {
+    //   return {
+    //     statusCode: 200,
+    //     body: responseBody
+    //   };
+    // }).catch((err) => {
+    //   console.log(err)
+    //   return {
+    //     statusCode: 400,
+    //     body: responseBody
+    //   };
+    // });
   } else {
     callback(null, {
       statusCode: 200
