@@ -7,12 +7,52 @@
 }
 
 .dash-main {
-  margin: 10rem 5rem;
+  margin: 5rem;
+  margin-top: 2rem;
+}
+
+.card {
+  display: flex;
+}
+
+.card-img {
+  width: auto;
+  max-height: 175px;
+  border-top-left-radius: 10px;
+  border-bottom-left-radius: 10px;
+}
+
+.card-body {
+  margin-left: 10px;
+}
+
+.new-event-fab {
+  position: fixed !important;
+  bottom: 30px;
+  right: 30px;
 }
 
 @media only screen and (max-width: 600px) {
   .dash-main {
-    margin: 3rem 2.5rem 1rem 2.5rem;
+    margin: 2rem 2.5rem 4rem 2.5rem;
+  }
+
+  .card {
+    flex-direction: column;
+  }
+
+  .card-img {
+    width: 100%;
+    max-height: 1000px;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+    border-bottom-left-radius: 0px;
+  }
+
+  .new-event-fab {
+    position: fixed;
+    bottom: 15px;
+    right: 15px;
   }
 }
 

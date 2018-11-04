@@ -8,99 +8,112 @@ import Typography from "@material-ui/core/Typography";
 import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
 import Button from "@material-ui/core/Button";
+import AddLogo from "@material-ui/icons/Add";
 
 import axios from "axios";
 
 import { withRouter } from "react-router-dom";
 
-const thumbsContainer = {
-  display: "flex",
-  flexDirection: "row",
-  flexWrap: "wrap",
-  marginTop: 16
-};
-
-const thumb = {
-  display: "inline-flex",
-  borderRadius: 2,
-  border: "1px solid #eaeaea",
-  marginBottom: 8,
-  marginRight: 8,
-  width: "auto",
-  height: "20vh",
-  padding: 4,
-  boxSizing: "border-box"
-};
-
-const thumbInner = {
-  display: "flex",
-  width: "auto",
-  height: "100%",
-  minWidth: 0
-};
-
-const img = {
-  display: "block",
-  width: "auto",
-  height: "100%"
-};
-
 const NewEventButton = withRouter(({ history }) => (
   <Button
-    color="primary"
+    color="secondary"
     onClick={() => {
       history.replace("/new");
     }}
-    variant="contained"
+    className="new-event-fab"
+    variant="extendedFab"
     size="large"
   >
-    New Event
+    <AddLogo style={{ marginRight: "5px" }} />
+    Event
   </Button>
 ));
+
+const Events = ({ events }) => (
+  <>
+    {events.map(event => (
+      <div
+        className="card"
+        style={{
+          marginTop: "10px",
+          marginBottom: "10px",
+          borderRadius: "10px",
+          border: "solid 1px black",
+          height: "auto"
+        }}
+      >
+        <img className="card-img" alt="" src={event.url} />
+        <div className="card-body">
+          <h1 className="card-title">{event.name}</h1>
+          <p>Number of people in the picture: {event.count}</p>
+          <p style={{ fontSize: "0.9em" }}>Added on: {event.uploaded_on}</p>
+        </div>
+      </div>
+    ))}
+  </>
+);
 
 class Dash extends Component {
   constructor() {
     super();
-    this.state = {
-      user: null,
-      fileURL: null,
-      file: null,
-      eventName: ""
-    };
+    this.state = { events: [] };
   }
 
   componentDidMount() {
-    this.fetchUser();
-    console.log(this.state.user);
     netlifyIdentity.on("logout", user => {
       this.setState({ user: null }, logoutUser());
       this.props.history.replace("/");
     });
+    this.fetchAllEvents();
   }
+
+  fetchAllEvents = () => {
+    const user = JSON.parse(localStorage.getItem("currentCountemUser"));
+    const user_id = user.id;
+    var queryString = `query {
+      users(where:{id: {_eq : "${user_id}"}}) {
+        name
+        email
+        eventImagessByuserId {
+          id
+          name
+          url
+          uploaded_on
+          analysis
+        }
+      }
+    }`;
+    axios
+      .post("https://count-em-all-db.herokuapp.com/v1alpha1/graphql", {
+        query: queryString
+      })
+      .then(response => {
+        var data = response.data.data.users[0].eventImagessByuserId;
+        data.map(elem => {
+          var dt = new Date(elem.uploaded_on);
+          elem.uploaded_on = dt.toLocaleString();
+          elem.count = elem.analysis.length;
+          return elem;
+        });
+        this.setState({ events: data });
+        console.log("data received");
+      })
+      .catch(error => console.error(error));
+  };
 
   handleLogOut = () => {
     netlifyIdentity.logout();
   };
 
-  fetchUser() {
+  fetchUserName() {
     const user = localStorage.getItem("currentCountemUser");
     console.log(user);
-    this.setState({ user: JSON.parse(user) });
-    console.log(this.state.user);
   }
 
   render() {
-    const thumbs = (
-      <div style={thumb}>
-        <div style={thumbInner}>
-          <img src={this.state.fileURL} alt="uploaded image" style={img} />
-        </div>
-      </div>
-    );
-
     return (
       <div className="Dash">
-        <AppBar position="static">
+        <AppBar position="sticky">
           <Toolbar>
             <Typography id="title-main" variant="h6" color="inherit">
               Count'em All
@@ -111,7 +124,8 @@ class Dash extends Component {
           </Toolbar>
         </AppBar>
         <div className="dash-main">
-          <NewEventButton/>
+          <NewEventButton />
+          <Events events={this.state.events} />
         </div>
       </div>
     );

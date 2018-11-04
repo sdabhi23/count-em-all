@@ -9,8 +9,9 @@ import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
 import Button from "@material-ui/core/Button";
 import TextField from "@material-ui/core/TextField";
-import IconButton from '@material-ui/core/IconButton';
-import ArrowBackIcon from '@material-ui/icons/ArrowBack';
+import IconButton from "@material-ui/core/IconButton";
+import CircularProgress from "@material-ui/core/CircularProgress";
+import ArrowBackIcon from "@material-ui/icons/ArrowBack";
 
 import Dropzone from "react-dropzone";
 
@@ -57,7 +58,11 @@ const img = {
 };
 
 const MenuBackButton = withRouter(({ history }) => (
-  <IconButton color="inherit" style={{marginLeft: -12, marginRight: 20}} onClick={() => history.replace("/dash")}>
+  <IconButton
+    color="inherit"
+    style={{ marginLeft: -12, marginRight: 20 }}
+    onClick={() => history.replace("/dash")}
+  >
     <ArrowBackIcon />
   </IconButton>
 ));
@@ -66,7 +71,6 @@ class NewEvent extends Component {
   constructor() {
     super();
     this.state = {
-      user: null,
       fileURL: null,
       file: null,
       eventName: "",
@@ -75,7 +79,6 @@ class NewEvent extends Component {
   }
 
   componentDidMount() {
-    this.fetchUser();
     console.log(this.state.user);
     netlifyIdentity.on("logout", user => {
       this.setState({ user: null }, logoutUser());
@@ -88,10 +91,9 @@ class NewEvent extends Component {
   }
 
   handleUpload = () => {
-    this.setState({processing: true})
+    this.setState({ processing: true });
     const finalFile = this.state.file;
     const eventName = this.state.eventName;
-    console.log(eventName);
     if (finalFile === null || eventName === "") {
       alert("Event name and picture cannot be empty");
     } else {
@@ -109,8 +111,7 @@ class NewEvent extends Component {
         .then(response => {
           const data = response.data;
           const fileURL = data.secure_url;
-          console.log(data);
-          console.log(fileURL);
+          console.log("image uploaded");
           this.processImg(eventName, fileURL);
         });
     }
@@ -120,7 +121,7 @@ class NewEvent extends Component {
     app.models
       .predict("a403429f2ddf4b49b307e318f00e528b", fileURL)
       .then(res => {
-        console.log(res.outputs[0].data.regions);
+        console.log("image processsed");
         this.saveToDb(eventName, fileURL, res.outputs[0].data.regions);
       })
       .catch(err => console.log(err));
@@ -137,7 +138,7 @@ class NewEvent extends Component {
         }
       }
     }`;
-    console.log(mutationPayload);
+    console.log("mutation generated");
     axios
       .post("https://count-em-all-db.herokuapp.com/v1alpha1/graphql", {
         query: mutationPayload,
@@ -145,7 +146,11 @@ class NewEvent extends Component {
           analysis: imgAnalysis
         }
       })
-      .then(response => console.log(response))
+      .then(response => {
+        console.log("data saved");
+        this.setState({processing: false});
+        this.props.history.replace("/dash");
+      })
       .catch(error => console.error(error));
   };
 
@@ -160,18 +165,11 @@ class NewEvent extends Component {
     });
   };
 
-  fetchUser() {
-    const user = localStorage.getItem("currentCountemUser");
-    console.log(user);
-    this.setState({ user: JSON.parse(user) });
-    console.log(this.state.user);
-  }
-
   render() {
     const thumbs = (
       <div style={thumb}>
         <div style={thumbInner}>
-          <img src={this.state.fileURL} alt="uploaded image" style={img} />
+          <img src={this.state.fileURL} alt="uploaded" style={img} />
         </div>
       </div>
     );
@@ -180,7 +178,7 @@ class NewEvent extends Component {
       <div className="NewEvent">
         <AppBar position="static">
           <Toolbar>
-            <MenuBackButton/>
+            <MenuBackButton />
             <Typography id="title-main" variant="h6" color="inherit">
               Count'em All
             </Typography>
@@ -222,11 +220,14 @@ class NewEvent extends Component {
           >
             Analyze
           </Button>
-          {
-              this.state.processing ? (
-                  ""
-              ) : ("")
-          }
+          {!this.state.processing ? (
+            ""
+          ) : (
+            <div style={{display: "flex", alignItems: "center", justifyContent: "center", marginTop: "25px"}}>
+              <CircularProgress color="primary" size={50} thickness={4} />
+              <Typography variant="h4" style={{marginLeft: "15px"}}>Processing...</Typography>
+            </div>
+          )}
         </div>
       </div>
     );

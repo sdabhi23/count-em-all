@@ -27,3 +27,15 @@
   margin-bottom: 20px;
   border: dashed 2px darkgray;
 }
+
+@keyframes example {
+  50%  {transform: rotate(180);}
+  100% {transform: rotate(360);}
+}
+
+.loading-icon {
+  font-size: 75px !important;
+  animation-name: example;
+  animation-duration: 4s;
+  animation-iteration-count: infinite;
+}
