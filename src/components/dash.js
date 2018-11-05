@@ -113,7 +113,7 @@ class Dash extends Component {
   render() {
     return (
       <div className="Dash">
-        <AppBar position="sticky">
+        <AppBar position="static">
           <Toolbar>
             <Typography id="title-main" variant="h6" color="inherit">
               Count'em All
