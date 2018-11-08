@@ -85,7 +85,7 @@ class Dash extends Component {
     }`;
     axios
       .post(
-        "https://count-em-all-db.herokuapp.com/v1alpha1/graphql",
+        process.env.REACT_APP_GQL_ENDPOINT,
         {
           query: queryString
         },
