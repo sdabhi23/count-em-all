@@ -68,7 +68,6 @@ class Dash extends Component {
   }
 
   fetchAllEvents = () => {
-    console.log(process.env.REACT_APP_HASURA);
     const user = JSON.parse(localStorage.getItem("currentCountemUser"));
     const user_id = user.id;
     var queryString = `query {
@@ -86,7 +85,7 @@ class Dash extends Component {
     }`;
     axios
       .post("https://count-em-all-db.herokuapp.com/v1alpha1/graphql", {
-        headers: {'X-Hasura-Access-Key': `${process.env.REACT_APP_HASURA}`},
+        headers: {'x-hasura-access-key': `${process.env.REACT_APP_HASURA}`},
         query: queryString
       })
       .then(response => {

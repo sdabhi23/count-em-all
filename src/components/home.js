@@ -40,7 +40,6 @@ class Home extends Component {
       this.setState({ user: null }, logoutUser())
     );
     console.log(process.env.REACT_APP_TEST);
-    console.log(process.env.REACT_APP_HASURA);
   }
 
   handleLogIn = () => {
