@@ -84,10 +84,13 @@ class Dash extends Component {
       }
     }`;
     axios
-      .post("https://count-em-all-db.herokuapp.com/v1alpha1/graphql", {
-        'x-hasura-access-key': process.env.REACT_APP_HASURA,
-        query: queryString
-      })
+      .post(
+        "https://count-em-all-db.herokuapp.com/v1alpha1/graphql",
+        {
+          query: queryString
+        },
+        { headers: { "x-hasura-access-key": process.env.REACT_APP_HASURA } }
+      )
       .then(response => {
         var data = response.data.data.users[0].eventImagessByuserId;
         data.map(elem => {
