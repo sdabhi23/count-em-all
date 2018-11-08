@@ -39,6 +39,7 @@ class Home extends Component {
     netlifyIdentity.on("logout", user =>
       this.setState({ user: null }, logoutUser())
     );
+    console.log(process.env.REACT_APP_TEST);
   }
 
   handleLogIn = () => {
