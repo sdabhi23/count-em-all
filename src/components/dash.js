@@ -85,6 +85,7 @@ class Dash extends Component {
     }`;
     axios
       .post("https://count-em-all-db.herokuapp.com/v1alpha1/graphql", {
+        headers: {'X-Hasura-Access-Key': `${process.env.REACT_APP_HASURA}`},
         query: queryString
       })
       .then(response => {

@@ -41,6 +41,7 @@ exports.handler = (event, context,  callback) => {
     axios({
       url: 'https://count-em-all-db.herokuapp.com/v1alpha1/graphql',
       method: 'post',
+      headers: {'X-Hasura-Access-Key': `${process.env.REACT_APP_HASURA}`},
       data: {
         query: `
           mutation {

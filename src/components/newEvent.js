@@ -141,6 +141,7 @@ class NewEvent extends Component {
     console.log("mutation generated");
     axios
       .post("https://count-em-all-db.herokuapp.com/v1alpha1/graphql", {
+        headers: {'X-Hasura-Access-Key': `${process.env.REACT_APP_HASURA}`},
         query: mutationPayload,
         variables: {
           analysis: imgAnalysis
