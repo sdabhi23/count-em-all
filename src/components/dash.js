@@ -68,6 +68,7 @@ class Dash extends Component {
   }
 
   fetchAllEvents = () => {
+    console.log(process.env.REACT_APP_HASURA);
     const user = JSON.parse(localStorage.getItem("currentCountemUser"));
     const user_id = user.id;
     var queryString = `query {
