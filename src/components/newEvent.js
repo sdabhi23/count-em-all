@@ -140,15 +140,20 @@ class NewEvent extends Component {
     }`;
     console.log("mutation generated");
     axios
-      .post("https://count-em-all-db.herokuapp.com/v1alpha1/graphql", {
-        query: mutationPayload,
-        variables: {
-          analysis: imgAnalysis
-        }
-      })
+      .post(
+        process.env.REACT_APP_GQL_ENDPOINT,
+        {
+          headers: { "X-Hasura-Access-Key": `${process.env.REACT_APP_HASURA}` },
+          query: mutationPayload,
+          variables: {
+            analysis: imgAnalysis
+          }
+        },
+        { headers: { "x-hasura-access-key": process.env.REACT_APP_HASURA } }
+      )
       .then(response => {
         console.log("data saved");
-        this.setState({processing: false});
+        this.setState({ processing: false });
         this.props.history.replace("/dash");
       })
       .catch(error => console.error(error));
@@ -223,9 +228,18 @@ class NewEvent extends Component {
           {!this.state.processing ? (
             ""
           ) : (
-            <div style={{display: "flex", alignItems: "center", justifyContent: "center", marginTop: "25px"}}>
+            <div
+              style={{
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                marginTop: "25px"
+              }}
+            >
               <CircularProgress color="primary" size={50} thickness={4} />
-              <Typography variant="h4" style={{marginLeft: "15px"}}>Processing...</Typography>
+              <Typography variant="h4" style={{ marginLeft: "15px" }}>
+                Processing...
+              </Typography>
             </div>
           )}
         </div>
