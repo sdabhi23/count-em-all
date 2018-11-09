@@ -22,7 +22,7 @@ import Clarifai from "clarifai";
 import axios from "axios";
 
 const app = new Clarifai.App({
-  apiKey: "209f927311e54b6eaaaa0f5ac65b0a83"
+  apiKey: process.env.REACT_APP_CLARIFAI
 });
 
 const thumbsContainer = {
@@ -99,7 +99,7 @@ class NewEvent extends Component {
     } else {
       const formData = new FormData();
       formData.append("file", finalFile);
-      formData.append("upload_preset", "qjjge8te");
+      formData.append("upload_preset", process.env.REACT_APP_CLOUDINARY);
       axios
         .post(
           "https://api.cloudinary.com/v1_1/count-em-all/image/upload",
