@@ -7,6 +7,8 @@ import netlifyIdentity from "netlify-identity-widget";
 
 netlifyIdentity.init({ logo: false });
 
+require('dotenv').config();
+
 ReactDOM.render(<App />, document.getElementById("root"));
 
 // If you want your app to work offline and load faster, you can change
