@@ -9,13 +9,9 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 
 We recommend using [yarn](https://yarnpkg.com/en/) instead of npm.
 
----
-
 ## Demo
 
 ![Demo gif](assets/demo.gif)
-
----
 
 ## Runs on:
 
@@ -24,11 +20,9 @@ We recommend using [yarn](https://yarnpkg.com/en/) instead of npm.
         <td><img src="assets/netlify.svg" alt="Netlify" width="200px"></td>
         <td><img src="assets/hasura.svg" alt="Hasura" width="200px"></td>
         <td><img src="assets/clarifai.svg" alt="Clarifai" width="200px"></td>
-        <td><img src="assets/Cloudinary.svg" alt="Cloudinary" width="200px"></td>
+        <td><img src="assets/cloudinary.svg" alt="Cloudinary" width="200px"></td>
     </tr>
 </table>
-
----
 
 ## Maintainers
 
