@@ -2,10 +2,6 @@
   margin: 10rem 5rem;
 }
 
-#hasura {
-  margin-top: 50px;
-}
-
 @media only screen and (max-width: 600px) {
   .main {
     margin: 3rem 2.5rem 1rem 2.5rem;

@@ -71,9 +71,8 @@ class Home extends Component {
           <p>
             Now leverage the power of Machine Learning in managing the attedants
             of your event. With Count'em All you can now use the extensively
-            trained and professionally developed models from Clarifai to
-            reliably count the number of people attending your event right from
-            your browser!
+            trained models to reliably count the number of people attending your
+            event right from your browser!
           </p>
           {user ? (
             <Fragment>
@@ -110,14 +109,6 @@ class Home extends Component {
             </Fragment>
           )}
           <br />
-          <a href="https://hasura.io">
-            <img
-              id="hasura"
-              width="150px"
-              alt="powered by Hasura"
-              src="https://graphql-engine-cdn.hasura.io/img/powered_by_hasura_black.svg"
-            />
-          </a>
         </div>
       </div>
     );
