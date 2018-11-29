@@ -11,5 +11,7 @@ exports.handler = (event, context, callback) => {
 
   console.log(data);
 
-  callback(null, data);
+  callback(null, {
+    body: JSON.stringify(data)
+  });
 };
