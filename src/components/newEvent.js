@@ -128,7 +128,7 @@ class NewEvent extends Component {
   };
 
   saveToDb = (eventName, fileURL, imgAnalysis) => {
-    const user = JSON.parse(localStorage.getItem("currentCountemUser"));
+    var user = JSON.parse(localStorage.getItem("currentCountemUser"));
     const user_id = user.id;
     const mutationPayload = `mutation insertEvent($analysis: json) {
       insert_event_images(objects: [{user_id: "${user_id}", name: "${eventName}", url: "${fileURL}", analysis: $analysis }]) {
@@ -139,24 +139,31 @@ class NewEvent extends Component {
       }
     }`;
     console.log("mutation generated");
-    axios
-      .post(
-        process.env.REACT_APP_GQL_ENDPOINT,
-        {
-          headers: { "X-Hasura-Access-Key": `${process.env.REACT_APP_HASURA}` },
-          query: mutationPayload,
-          variables: {
-            analysis: imgAnalysis
-          }
-        },
-        { headers: { "x-hasura-access-key": process.env.REACT_APP_HASURA } }
-      )
-      .then(response => {
-        console.log("data saved");
-        this.setState({ processing: false });
-        this.props.history.replace("/dash");
+    user = netlifyIdentity.currentUser();
+    var jwt = user.jwt();
+    jwt
+      .then(token => {
+        axios
+          .post(
+            process.env.REACT_APP_GQL_ENDPOINT,
+            {
+              query: mutationPayload,
+              variables: {
+                analysis: imgAnalysis
+              }
+            },
+            { headers: { authorization: "Bearer " + token } }
+          )
+          .then(response => {
+            console.log("data saved");
+            this.setState({ processing: false });
+            this.props.history.replace("/dash");
+          })
+          .catch(error => console.error(error));
       })
-      .catch(error => console.error(error));
+      .catch(error => {
+        console.log("Error fetching JWT token", error);
+      });
   };
 
   handleLogOut = () => {

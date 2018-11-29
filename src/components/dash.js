@@ -68,7 +68,7 @@ class Dash extends Component {
   }
 
   fetchAllEvents = () => {
-    const user = JSON.parse(localStorage.getItem("currentCountemUser"));
+    var user = JSON.parse(localStorage.getItem("currentCountemUser"));
     const user_id = user.id;
     var queryString = `query {
       users(where:{id: {_eq : "${user_id}"}}) {
@@ -83,26 +83,34 @@ class Dash extends Component {
         }
       }
     }`;
-    axios
-      .post(
-        process.env.REACT_APP_GQL_ENDPOINT,
-        {
-          query: queryString
-        },
-        { headers: { "x-hasura-access-key": process.env.REACT_APP_HASURA } }
-      )
-      .then(response => {
-        var data = response.data.data.users[0].eventImagessByuserId;
-        data.map(elem => {
-          var dt = new Date(elem.uploaded_on);
-          elem.uploaded_on = dt.toLocaleString();
-          elem.count = elem.analysis.length;
-          return elem;
-        });
-        this.setState({ events: data });
-        console.log("data received");
+    user = netlifyIdentity.currentUser();
+    var jwt = user.jwt();
+    jwt
+      .then(token => {
+        axios
+          .post(
+            process.env.REACT_APP_GQL_ENDPOINT,
+            {
+              query: queryString
+            },
+            { headers: { authorization: "Bearer " + token } }
+          )
+          .then(response => {
+            var data = response.data.data.users[0].eventImagessByuserId;
+            data.map(elem => {
+              var dt = new Date(elem.uploaded_on);
+              elem.uploaded_on = dt.toLocaleString();
+              elem.count = elem.analysis.length;
+              return elem;
+            });
+            this.setState({ events: data });
+            console.log("data received");
+          })
+          .catch(error => console.error(error));
       })
-      .catch(error => console.error(error));
+      .catch(error => {
+        console.log("Error fetching JWT token", error);
+      });
   };
 
   handleLogOut = () => {
