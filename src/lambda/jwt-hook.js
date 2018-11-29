@@ -31,42 +31,13 @@
 import axios from "axios";
 
 exports.handler = (event, context, callback) => {
-  let body = JSON.parse(event.body);
-  if (body.event === "signup") {
-    const responseBody = { app_metadata: { roles: ["user"] } };
-    console.log(body);
-    console.log(responseBody);
+  const {identity, user} = context.clientContext;
 
-    axios
-      .post(
-        process.env.REACT_APP_GQL_ENDPOINT,
-        {
-          query: `
-          mutation {
-              insert_users(objects: [{id: "${body.user.id}", name: "${body.user.user_metadata.full_name}", email: "${body.user.email}"}]) {
-                affected_rows
-              }
-            }
-          `
-        },
-        { headers: { "x-hasura-access-key": process.env.REACT_APP_HASURA } }
-      )
-      .then(res => {
-        callback(null, {
-          statusCode: 200,
-          body: JSON.stringify(responseBody)
-        });
-      })
-      .catch(err => {
-        console.log(err);
-        callback(null, {
-          statusCode: 401,
-          body: JSON.stringify(responseBody)
-        });
-      });
-  } else {
-    callback(null, {
-      statusCode: 200
-    });
-  }
+  console.log(identity);
+  console.log(user);
+
+  callback(null, {
+    statusCode: 200,
+    body: JSON.stringify(user)
+  });
 };
