@@ -1,3 +1,5 @@
+# :warning: This project is no longer being maintained :warning:
+
 # count-em-all
 
 [![GitHub stars](https://img.shields.io/github/stars/sdabhi23/count-em-all.svg)](https://github.com/sdabhi23/count-em-all/stargazers)
@@ -46,7 +48,7 @@ Ideal starting point for beginners will be to look at issues labelled as [`good 
     </tr>
 </table>
 
-## Maintainers
+## Authors
 
 - Shrey Dabhi ([sdabhi23](https://github.com/sdabhi23))
 - Sohel Shaikh ([thesohelshaikh](https://github.com/thesohelshaikh))
